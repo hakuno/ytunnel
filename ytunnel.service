@@ -1,0 +1,13 @@
+[Unit]
+Description=Ytunnel
+Requires=ytunnel.target
+After=ytunnel.target
+After=network.target
+
+[Service]
+ExecStart=/opt/ytunnel/ytunnel.sh
+RemainAfterExit=true
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target
