@@ -1,8 +1,11 @@
 .PHONY: install
 
+branch := main
+
 install:
-		sudo mkdir -p /opt/ytunnel; \
-		git clone https://github.com/hakuno/ytunnel.git /opt/ytunnel; \
-		cd /opt/ytunnel && sudo cp ytunnel.service /etc/systemd/system/; \
+		wget https://github.com/hakuno/ytunnel/archive/refs/heads/$(branch).zip -O ytunnel.zip; \
+		sudo unzip -o -qq ytunnel.zip -d /opt; \
+		sudo ln -sf /opt/ytunnel-$(branch) /opt/ytunnel; \
+		sudo cp /opt/ytunnel/ytunnel.service /etc/systemd/system/; \
 		sudo chmod 664 /etc/systemd/system/ytunnel.service; \
 		sudo systemctl daemon-reload

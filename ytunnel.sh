@@ -20,9 +20,6 @@ sudo ip route del default via $GATEWAY
 # Subnet
 sudo route add -net 10.32.0.0 netmask 255.255.0.0 gw $GATEWAY
 
-# metabase.meliuz.com.br
-# sudo route add -net 35.168.103.192 netmask 255.255.255.255 gw $GATEWAY
-
 # Iterate private endpoint list
 for endpoint in ${ENDPOINTS[@]}
 do
