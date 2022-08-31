@@ -1,7 +1,7 @@
 [Unit]
 Description=Ytunnel
-Requires=openvpn.target
-After=openvpn.target
+Requires=openvpn.service
+After=openvpn.service
 After=network.target
 
 [Service]
