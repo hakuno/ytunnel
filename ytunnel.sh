@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 touch endpoints.dat
+sleep 2
 
 OLDADDR=
 NEWADDR=
