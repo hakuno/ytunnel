@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 touch endpoints.dat
-sleep 2
+sleep 10
 
 OLDADDR=
 NEWADDR=
@@ -8,12 +8,17 @@ VPNI=gpd0
 GATEWAY=$(netstat -r | grep default | grep $VPNI | awk '{print $2}')
 ENDPOINTS=($(cat endpoints.dat))
 
-if [ "$GATEWAY" == "" ]; then
-    echo "It seems OK. No ${VPNI}'s default route found."
-    exit 0
+if [ ! -e /proc/$(pidof PanGPA) ]; then
+    echo "PanGPA is not running yet. Awaiting..."
+    sleep 10;
 fi
 
-OLDADDR=$"(dig +short myip.opendns.com @resolver1.opendns.com)"
+if [ "$GATEWAY" == "" ]; then
+    echo "It seems OK. No ${VPNI}'s default route found."
+    exit 1
+fi
+
+OLDADDR=$(dig +short myip.opendns.com @resolver1.opendns.com -4)
 
 # Removing the catchall
 sudo ip route del default via $GATEWAY
@@ -30,6 +35,6 @@ done
 # Debug
 # netstat -r
 
-NEWADDR="$(dig +short myip.opendns.com @resolver1.opendns.com)"
+NEWADDR=$(dig +short myip.opendns.com @resolver1.opendns.com -4)
 
 echo "Your IP address is ${OLDADDR} through VPN tunnel. And it is ${NEWADDR} bypassing."
