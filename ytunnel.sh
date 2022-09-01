@@ -1,16 +1,20 @@
 #!/usr/bin/env bash
 touch endpoints.dat
-sleep 10
 
 OLDADDR=
 NEWADDR=
 VPNI=gpd0
-GATEWAY=$(netstat -r | grep default | grep $VPNI | awk '{print $2}')
+GATEWAY=$(ip route | grep default | grep $VPNI | awk '{print $3}')
 ENDPOINTS=($(cat endpoints.dat))
 
 if [ ! -e /proc/$(pidof PanGPA) ]; then
     echo "PanGPA is not running yet. Awaiting..."
-    sleep 10;
+    sleep 10
+fi
+
+if [ ! -e /proc/$(pidof PanGPS) ]; then
+    echo "PanGPS is not running yet. Awaiting..."
+    sleep 10
 fi
 
 if [ "$GATEWAY" == "" ]; then
@@ -29,11 +33,13 @@ sudo route add -net 10.32.0.0 netmask 255.255.0.0 gw $GATEWAY
 # Iterate private endpoint list
 for endpoint in ${ENDPOINTS[@]}
 do
-    sudo route add -net $(dig +short $endpoint) netmask 255.255.255.255 gw $GATEWAY
+    RESOLVING="$(dig +short $endpoint)"
+    if [ "$RESOLVING" == "" ]; then
+        sudo route add -net $endpoint netmask 255.255.255.255 gw $GATEWAY
+    else
+        sudo route add -net $RESOLVING netmask 255.255.255.255 gw $GATEWAY
+    fi
 done
-
-# Debug
-# netstat -r
 
 NEWADDR=$(dig +short myip.opendns.com @resolver1.opendns.com -4)
 
