@@ -1,8 +1,7 @@
 [Unit]
 Description=Ytunnel
-Requires=openvpn.service
-After=openvpn.service
-After=network.target
+Requires=$DEPENDS_ON
+After=$DEPENDS_ON
 
 [Service]
 ExecStart=/opt/ytunnel/ytunnel.sh
