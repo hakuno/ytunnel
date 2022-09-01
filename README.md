@@ -1,5 +1,7 @@
 # ytunnel
 
+Para instalar usando `make`
+
 ```
-Created symlink /etc/systemd/system/multi-user.target.wants/ytunnel.service → /etc/systemd/system/ytunnel.service.
+make DEPENDS_ON="network.target" install
 ```
