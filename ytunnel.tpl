@@ -1,6 +1,5 @@
 [Unit]
 Description=Ytunnel
-Requires=$DEPENDS_ON
 After=$DEPENDS_ON
 
 [Service]
