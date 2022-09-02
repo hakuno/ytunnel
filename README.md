@@ -2,6 +2,8 @@
 
 Split tunnel for your VPN easily. Do it as a service in your Linux box (tested on Ubuntu).
 
+Ps. turn on your VPN connection before.
+
 ## Setup
 
 Para instalar remotamente, execute em um terminal Linux:
@@ -26,6 +28,8 @@ Agora, você pode gerenciar o serviço:
 sudo systemctl start ytunnel.service
 sudo systemctl enable ytunnel.service
 ```
+
+Lembrando-se que é necessário ter o serviço de VPN em execução para usufruir das rotas.
 
 ## Misc
 
