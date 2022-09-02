@@ -29,7 +29,9 @@ sudo systemctl enable ytunnel.service
 
 ## Misc
 
-Para instalar usando `make`
+A variável `DEPENDS_ON` possui os serviços que devem ser aguardados. Porém, a mágica ainda acontece em função de um `sleep` para aguardar a route table desejada para alteração.
+
+Para instalar usando `make`:
 
 ```
 make DEPENDS_ON="network.target" install
