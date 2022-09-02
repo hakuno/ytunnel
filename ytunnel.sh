@@ -20,10 +20,12 @@ fi
 OLDADDR=$(dig +short myip.opendns.com @resolver1.opendns.com -4)
 
 # Removing the catchall
-sudo ip route del default via $GATEWAY
+# sudo ip route del default via $GATEWAY
+sudo ip route del default dev $VPNI
 
 # Subnet
-sudo route add -net 10.32.0.0 netmask 255.255.0.0 gw $GATEWAY
+# sudo route add -net 10.32.0.0 netmask 255.255.0.0 gw $GATEWAY
+sudo ip route add 10.32.0.0/16 dev $VPNI
 
 # Iterate private endpoint list
 for endpoint in ${ENDPOINTS[@]}
