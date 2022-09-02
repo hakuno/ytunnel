@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 touch endpoints.dat
+sleep 20
 
 OLDADDR=
 NEWADDR=
@@ -9,12 +10,10 @@ ENDPOINTS=($(cat endpoints.dat))
 
 if [ ! -e /proc/$(pidof PanGPA) ]; then
     echo "PanGPA is not running yet. Awaiting..."
-    sleep 10
 fi
 
 if [ ! -e /proc/$(pidof PanGPS) ]; then
     echo "PanGPS is not running yet. Awaiting..."
-    sleep 10
 fi
 
 if [ "$GATEWAY" == "" ]; then
