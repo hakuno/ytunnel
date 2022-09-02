@@ -1,6 +1,6 @@
 .PHONY: install enable
 
-DEPENDS_ON ?= "network.target"
+DEPENDS_ON ?= "network-online.target"
 
 BRANCH := main
 

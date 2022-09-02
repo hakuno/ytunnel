@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 touch endpoints.dat
-sleep 20
+sleep 30
 
 OLDADDR=
 NEWADDR=
@@ -8,16 +8,12 @@ VPNI=gpd0
 GATEWAY=$(ip route | grep default | grep $VPNI | awk '{print $3}')
 ENDPOINTS=($(cat endpoints.dat))
 
-if [ ! -e /proc/$(pidof PanGPA) ]; then
-    echo "PanGPA is not running yet. Awaiting..."
-fi
+[ -e /proc/$(pidof PanGPA) ] || echo "PanGPA is not running."
 
-if [ ! -e /proc/$(pidof PanGPS) ]; then
-    echo "PanGPS is not running yet. Awaiting..."
-fi
+[ -e /proc/$(pidof PanGPS) ] || echo "PanGPS is not running."
 
 if [ "$GATEWAY" == "" ]; then
-    echo "It seems OK. No ${VPNI}'s default route found."
+    echo "No ${VPNI}'s default route found."
     exit 1
 fi
 

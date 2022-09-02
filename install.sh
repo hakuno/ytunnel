@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 BRANCH="${BRANCH:-main}"
-DEPENDS_ON="${DEPENDS_ON:-$@}"
+DEPENDS_ON="${DEPENDS_ON:-network-online.target}"
 
 test -f /tmp/ytunnel.zip || wget https://github.com/hakuno/ytunnel/archive/refs/heads/$(BRANCH).zip -O /tmp/ytunnel.zip; \
 sudo unzip -o -qq /tmp/ytunnel.zip -d /opt; \
