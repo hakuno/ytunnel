@@ -19,6 +19,8 @@ if [ "$GATEWAY" == "" ]; then
     exit 1
 fi
 
+echo "The timer is ${TIMER}. The device is ${TUNNEL_NAME}."
+
 OLDADDR=$(dig +short myip.opendns.com @resolver1.opendns.com -4)
 
 # Removing the catchall
