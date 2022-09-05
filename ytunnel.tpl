@@ -8,6 +8,8 @@ RemainAfterExit=true
 Type=oneshot
 WorkingDirectory=/opt/ytunnel
 Restart=on-failure
+Environment=TUNNEL_NAME=$TUNNEL_NAME
+Environment=TIMER=$TIMER
 
 [Install]
 WantedBy=multi-user.target
