@@ -14,11 +14,12 @@ Para instalar remotamente, execute em um terminal Linux:
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/hakuno/ytunnel/main/install.sh)"
 ```
 
-Alimente a lista em `/opt/ytunnel/endpoints.dat`. Cada linha representa uma rota a ser aplicada para o túnel VPN. Por exemplo:
+Alimente a lista em `/opt/ytunnel/endpoints.dat`. Cada linha representa uma rota a ser aplicada para o túnel VPN. Inclusive, a subnet privada se houver. Por exemplo:
 
 ```
+10.1.0.0/16
 endereco.restrito.com.br
-10.1.1.2
+10.2.1.2
 35.0.2.34
 ```
 
@@ -38,17 +39,37 @@ Lembrando-se que é necessário ter o serviço de VPN em execução para usufrui
 A variável `DEPENDS_ON` possui os serviços que devem ser aguardados. Porém, a mágica ainda acontece em função de um `sleep` para aguardar a route table desejada para alteração.
 
 ```
-make DEPENDS_ON="network.target" install
+make DEPENDS_ON="network-online.target" install
+```
+
+### Para instalar entre branches
+
+Stable
+
+```
+BRANCH=main DEPENDS_ON="network-online.target" sh -c "$(curl -fsSL https://raw.githubusercontent.com/hakuno/ytunnel/staging/install.sh)"
+```
+
+Unstable
+
+```
+BRANCH=staging DEPENDS_ON="network-online.target" sh -c "$(curl -fsSL https://raw.githubusercontent.com/hakuno/ytunnel/staging/install.sh)"
 ```
 
 ### Para acompanhar os logs
 
 ```
-sudo journalctl -u ytunnel
+sudo journalctl -e -u ytunnel
 ```
 
-### Para acompanhar o serviço
+### Para acompanhar o status do serviço
 
 ```
-sudo systemctl cat ytunnel
+sudo systemctl status ytunnel
+```
+
+### Para verificar o inicializador do serviço
+
+```
+sudo systemctl status ytunnel
 ```
