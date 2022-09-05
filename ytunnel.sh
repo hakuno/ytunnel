@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 touch endpoints.dat
-#sleep 30
+sleep 30
 
 OLDADDR=
 NEWADDR=
@@ -21,9 +21,6 @@ OLDADDR=$(dig +short myip.opendns.com @resolver1.opendns.com -4)
 
 # Removing the catchall
 sudo ip route del default dev $VPNI
-
-# Subnet (deprecated, now it is in the endpoints list)
-# sudo ip route add 10.32.0.0/16 dev $VPNI
 
 # Iterate private endpoint list
 for endpoint in ${ENDPOINTS[@]}
