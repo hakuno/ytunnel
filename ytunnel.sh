@@ -3,16 +3,25 @@ OLDADDR=
 NEWADDR=
 TIMER=${TIMER:-20}
 TUNNEL_NAME="${TUNNEL_NAME:-gpd0}"
+NGATEWAYS=$(ip route | grep default | wc -l)
+
+if [ "$1" == "reload" ]; then
+    SERVICES=($(sudo systemctl cat ytunnel.service | grep ^After= | cut -d "=" -f2))
+    for SERVICE in ${SERVICES[@]}
+    do
+        if [[ "$SERVICE" =~ ".service" ]]; then
+        echo "Restarting ${SERVICE}"
+        sudo systemctl restart ${SERVICE} && echo "Restarted successfully." || echo "Failed to restart."
+    done
+
+    [ "$(pidof PanGPS)" != "" ] && sudo systemctl restart gpd.service
+fi
 
 touch endpoints.dat
 sleep $TIMER
 
 GATEWAY=$(ip route | grep default | grep $TUNNEL_NAME | awk '{print $3}')
 ENDPOINTS=($(cat endpoints.dat))
-
-[ -e /proc/$(pidof PanGPA) ] || echo "PanGPA is not running."
-
-[ -e /proc/$(pidof PanGPS) ] || echo "PanGPS is not running."
 
 if [ "$GATEWAY" == "" ]; then
     echo "No ${TUNNEL_NAME}'s default route found."
@@ -29,8 +38,7 @@ sudo ip route del default dev $TUNNEL_NAME
 # Iterate private endpoint list
 for endpoint in ${ENDPOINTS[@]}
 do
-    IS_IPV4=$(echo $endpoint | egrep '^([0-9]{1,3}\.[0-9]{1,3}\.)')
-    if [ "$IS_IPV4" != "" ]; then
+    if [[ "$endpoint" =~ '^([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})' ]]; then
         echo "Found endpoint $endpoint"
         sudo ip route add $endpoint via $GATEWAY dev $TUNNEL_NAME
     else
