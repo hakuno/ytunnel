@@ -5,7 +5,7 @@ TIMER=${TIMER:-20}
 TUNNEL_NAME="${TUNNEL_NAME:-gpd0}"
 NGATEWAYS=$(ip route | grep default | wc -l)
 
-if [ "$1" == "reload" ]; then
+if [ "$1" == "restart" ]; then
     SERVICES=($(sudo systemctl cat ytunnel.service | grep ^After= | cut -d "=" -f2))
     for SERVICE in ${SERVICES[@]}
     do

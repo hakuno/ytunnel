@@ -4,6 +4,7 @@ After=$DEPENDS_ON
 
 [Service]
 ExecStart=/opt/ytunnel/ytunnel.sh
+ExecStartPost=/opt/ytunnel/ytunnel.sh restart
 RemainAfterExit=true
 Type=oneshot
 WorkingDirectory=/opt/ytunnel
