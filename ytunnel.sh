@@ -4,8 +4,9 @@ NEWADDR=
 TIMER=${TIMER:-20}
 TUNNEL_NAME="${TUNNEL_NAME:-gpd0}"
 NGATEWAYS=$(ip route | grep default | wc -l)
-echo $1
-if [ "$1" == "restart" ]; then
+
+if [ "${1}" == "restart" ]; then
+    echo "Lets restart this..."
     SERVICES=($(sudo systemctl cat ytunnel.service | grep ^After= | cut -d "=" -f2))
     for SERVICE in ${SERVICES[@]}
     do
