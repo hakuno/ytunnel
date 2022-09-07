@@ -4,17 +4,19 @@ NEWADDR=
 TIMER=${TIMER:-20}
 TUNNEL_NAME="${TUNNEL_NAME:-gpd0}"
 NGATEWAYS=$(ip route | grep default | wc -l)
-
+echo $1
 if [ "$1" == "restart" ]; then
     SERVICES=($(sudo systemctl cat ytunnel.service | grep ^After= | cut -d "=" -f2))
     for SERVICE in ${SERVICES[@]}
     do
         if [[ "$SERVICE" =~ ".service" ]]; then
-        echo "Restarting ${SERVICE}"
-        sudo systemctl restart ${SERVICE} && echo "Restarted successfully." || echo "Failed to restart."
+            echo "Restarting ${SERVICE}"
+            sudo systemctl restart ${SERVICE} && echo "Restarted successfully." || echo "Failed to restart."
+        fi
     done
 
-    [ "$(pidof PanGPS)" != "" ] && sudo systemctl restart gpd.service
+    # Another way
+    # [ "$(pidof PanGPS)" != "" ] && sudo systemctl restart gpd.service
 fi
 
 touch endpoints.dat
