@@ -40,7 +40,8 @@ sudo ip route del default dev $TUNNEL_NAME
 # Iterate private endpoint list
 for endpoint in ${ENDPOINTS[@]}
 do
-    if [[ "$endpoint" =~ '^([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})' ]]; then
+    IS_IPV4=$(echo $endpoint | egrep '^([0-9]{1,3}\.[0-9]{1,3}\.)')
+    if [ "$IS_IPV4" != "" ]; then
         echo "Found endpoint $endpoint"
         sudo ip route add $endpoint via $GATEWAY dev $TUNNEL_NAME
     else
